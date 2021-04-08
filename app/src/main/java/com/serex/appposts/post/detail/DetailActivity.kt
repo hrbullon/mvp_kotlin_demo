@@ -1,34 +1,32 @@
 package com.serex.appposts.post.detail
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.serex.appposts.databinding.ActivityDetailBinding
 import com.serex.appposts.post.form.FormActivity
 import com.serex.appposts.post.list.ListActivity
+import com.serex.appposts.post.list.ListActivity.Companion.POST
 import com.serex.appposts.post.model.Post
 
 class DetailActivity : AppCompatActivity(), DetailActivityView {
 
-    private var post_id = 0
-    private val presenter = DetailActivityPresenter(this, DetailActivityInteractor())
-    private lateinit var binding: ActivityDetailBinding
+    private val presenter = DetailActivityPresenter(this)
+    private val postId by lazy { intent?.extras?.getInt(POST) }
+    private val binding by lazy { ActivityDetailBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
 
-        binding = ActivityDetailBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
-
-        post_id = intent?.extras?.getString("post")!!.toInt()
-
-        getPost(post_id)
-
-        binding.btnDelPost.setOnClickListener { deletePost(post_id) }
-        binding.btnEditPost.setOnClickListener { updatePost(post_id) }
-
+        postId?.let {
+            getPost(it)
+            binding.btnDelPost.setOnClickListener { deletePost(postId!!) }
+            binding.btnEditPost.setOnClickListener { updatePost(postId!!) }
+        } ?: run {
+            finish()
+        }
     }
 
     override fun getPost(id: Int) {
@@ -51,13 +49,11 @@ class DetailActivity : AppCompatActivity(), DetailActivityView {
 
     override fun updatePost(id: Int) {
         startActivity(Intent(this, FormActivity::class.java).putExtra("post", id.toString()))
-      }
+    }
 
     override fun deletePost(id: Int) {
         presenter.deletePost(id)
     }
-
-
 }
 
 

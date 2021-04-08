@@ -3,28 +3,29 @@ package com.serex.appposts.post.form
 import com.serex.appposts.post.model.Post
 
 class FormActivityPresenter(
-        var view: FormActivityView,
-        val interactor: FormActivityInteractor
-        ) : FormActivityInteractor.OnFinishedListener {
+    private val view: FormActivityView
+) : FormActivityInteractor.OnFinishedListener {
 
-    fun savePost(id: Int, title: String, body: String){
-        if(id > 0){
-            interactor.updatePost(id,title,body,1,this)
-        }else{
-            interactor.createPost(title,body,1,this)
+    private val interactor = FormActivityInteractor(this)
+
+    fun savePost(id: Int, title: String, body: String) {
+        if (id > 0) {
+            interactor.updatePost(id, title, body, 1)
+        } else {
+            interactor.createPost(title, body, 1)
         }
     }
 
-    fun getPost(id:Int) {
-        interactor.getPost(id, this)
+    fun getPost(id: Int) {
+        interactor.getPost(id)
     }
 
     override fun onPostLoaded(post: Post) {
         view.setDataForm(post)
     }
 
-    override fun onSuccess(message: String) {
-        view.onAddSuccess(message)
+    override fun onSuccess(post: Post) {
+        view.onAddSuccess(post)
     }
 
     override fun onError(message: String) {

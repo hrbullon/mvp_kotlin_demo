@@ -1,6 +1,5 @@
 package com.serex.appposts.post.list
 
-import com.google.gson.Gson
 import com.serex.appposts.network.RetrofitInstance
 import com.serex.appposts.post.PostService
 import com.serex.appposts.post.model.Post

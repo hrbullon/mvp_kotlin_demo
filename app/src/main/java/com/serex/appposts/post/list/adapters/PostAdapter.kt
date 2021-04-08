@@ -16,15 +16,20 @@ class PostAdapter(private var posts: ArrayList<Post> = ArrayList(), private var 
         fun onViewItemClick(view: View?, position: Int)
     }
 
+    fun addItem(post: Post) {
+        posts.add(post)
+        notifyItemInserted(itemCount)
+    }
+
     fun setClickListener(itemClickListener: OnItemClickListener) {
         clickListener = itemClickListener
     }
 
-    class PostViewHolder (view: View) : RecyclerView.ViewHolder(view) {
+    class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val binding = PostItemBinding.bind(view)
 
-        fun bind(post: Post){
+        fun bind(post: Post) {
             binding.title.text = post.title.substring(0,10)
             binding.body.text  = post.body.substring(0,20)
         }

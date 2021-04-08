@@ -1,8 +1,10 @@
 package com.serex.appposts.post.model
 
-class Post(
-    var id:Int,
-    var userId: Int,
-    var title:String,
-    var body:String)
+import com.google.gson.annotations.SerializedName
 
+class Post(
+    @SerializedName("id") val id: Int,
+    @SerializedName("title") val title: String,
+    @SerializedName("body") val body: String,
+    @SerializedName("userId") val userId: Int
+)

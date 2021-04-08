@@ -1,18 +1,20 @@
 package com.serex.appposts.post.form
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.serex.appposts.databinding.ActivityFormBinding
 import com.serex.appposts.post.list.ListActivity
+import com.serex.appposts.post.list.adapters.PostAdapter
 import com.serex.appposts.post.model.Post
 
 class FormActivity : AppCompatActivity(), FormActivityView {
 
     private var post_id = 0
-    private val presenter = FormActivityPresenter(this, FormActivityInteractor())
+    private val presenter = FormActivityPresenter(this)
     private lateinit var binding: ActivityFormBinding
+    lateinit var postAdapter: PostAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,13 +33,14 @@ class FormActivity : AppCompatActivity(), FormActivityView {
 
     }
 
-    override fun onAddSuccess(message: String) {
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
-        startActivity(Intent(this, ListActivity::class.java))
+    override fun onAddSuccess(post: Post) {
+
+        Toast.makeText(this, "Datos guardados satisfactoriamente", Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this, ListActivity::class.java).putExtra("post", post.toString()))
     }
 
     override fun onAddError(message: String) {
-        Toast.makeText(this,message,Toast.LENGTH_LONG).show()
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     override fun setDataForm(post: Post) {
